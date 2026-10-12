@@ -34,7 +34,8 @@
     "year": 1813,
     "added": "2026-10-10",
     "bestseller": true,
-    "description": "Elizabeth Bennet and Mr. Darcy misjudge each other badly in this sharp, funny comedy of manners about love, money and first impressions."
+    "description": "Elizabeth Bennet and Mr. Darcy misjudge each other badly in this sharp, funny comedy of manners about love, money and first impressions.",
+    "payLink": "https://www.paypal.com/ncp/payment/PXWLZ5TK24YBQ"
   },
   {
     "title": "The Adventures of Sherlock Holmes",
@@ -43,7 +44,8 @@
     "year": 1892,
     "added": "2026-10-09",
     "bestseller": true,
-    "description": "Twelve short cases from the world's most famous consulting detective, narrated by his friend Dr. Watson."
+    "description": "Twelve short cases from the world's most famous consulting detective, narrated by his friend Dr. Watson.",
+    "payLink": "https://www.paypal.com/ncp/payment/W6W92VWG2DH7L"
   },
   {
     "title": "Alice's Adventures in Wonderland",
@@ -61,7 +63,8 @@
     "year": 1847,
     "added": "2026-10-07",
     "bestseller": false,
-    "description": "An orphan becomes a governess at Thornfield Hall and finds a secret there. A story of independence, love and conscience."
+    "description": "An orphan becomes a governess at Thornfield Hall and finds a secret there. A story of independence, love and conscience.",
+    "payLink": "https://www.paypal.com/ncp/payment/BTAKFGZ365C44"
   },
   {
     "title": "Wuthering Heights",
@@ -70,7 +73,8 @@
     "year": 1847,
     "added": "2026-10-06",
     "bestseller": false,
-    "description": "A foundling, a wild house on the Yorkshire moors, and a love that turns into revenge across two generations."
+    "description": "A foundling, a wild house on the Yorkshire moors, and a love that turns into revenge across two generations.",
+    "payLink": "https://www.paypal.com/ncp/payment/YEP99QJZR7DTG"
   },
   {
     "title": "Moby-Dick",
@@ -79,7 +83,8 @@
     "year": 1851,
     "added": "2026-10-05",
     "bestseller": false,
-    "description": "Captain Ahab's obsessive hunt for the white whale, narrated by the sailor Ishmael. An epic of the sea and of obsession."
+    "description": "Captain Ahab's obsessive hunt for the white whale, narrated by the sailor Ishmael. An epic of the sea and of obsession.",
+    "payLink": "https://www.paypal.com/ncp/payment/BDT6R3TT9GCKG"
   },
   {
     "title": "Treasure Island",
@@ -88,7 +93,8 @@
     "year": 1883,
     "added": "2026-10-04",
     "bestseller": false,
-    "description": "Young Jim Hawkins finds a pirate's map and sails in search of buried treasure, with Long John Silver aboard."
+    "description": "Young Jim Hawkins finds a pirate's map and sails in search of buried treasure, with Long John Silver aboard.",
+    "payLink": "https://www.paypal.com/ncp/payment/LXJT5YKB3LUHC"
   },
   {
     "title": "The Wonderful Wizard of Oz",
@@ -97,7 +103,8 @@
     "year": 1900,
     "added": "2026-10-03",
     "bestseller": false,
-    "description": "A Kansas farm girl is swept away to a magical land and sets off along the yellow brick road to find the Wizard."
+    "description": "A Kansas farm girl is swept away to a magical land and sets off along the yellow brick road to find the Wizard.",
+    "payLink": "https://www.paypal.com/ncp/payment/Q57SJYGW233XG"
   },
   {
     "title": "The Great Gatsby",
@@ -106,7 +113,8 @@
     "year": 1925,
     "added": "2026-10-02",
     "bestseller": false,
-    "description": "Nick Carraway watches his mysterious neighbor chase an old love through the glittering excess of the Jazz Age."
+    "description": "Nick Carraway watches his mysterious neighbor chase an old love through the glittering excess of the Jazz Age.",
+    "payLink": "https://www.paypal.com/ncp/payment/FYDE5K2DE2VRY"
   },
   {
     "title": "The Picture of Dorian Gray",
@@ -115,7 +123,8 @@
     "year": 1890,
     "added": "2026-10-01",
     "bestseller": false,
-    "description": "A beautiful young man stays unchanged while his portrait takes on the marks of his choices."
+    "description": "A beautiful young man stays unchanged while his portrait takes on the marks of his choices.",
+    "payLink": "https://www.paypal.com/ncp/payment/EG9X3FBVGFBRY"
   },
   {
     "title": "Leaves of Grass",
@@ -124,7 +133,8 @@
     "year": 1855,
     "added": "2026-09-30",
     "bestseller": false,
-    "description": "Whitman's sprawling, joyful celebration of the self, the body, nature and democracy in free verse."
+    "description": "Whitman's sprawling, joyful celebration of the self, the body, nature and democracy in free verse.",
+    "payLink": "https://www.paypal.com/ncp/payment/A2HJ8HMRQE9J4"
   },
   {
     "title": "Walden",
@@ -133,6 +143,7 @@
     "year": 1854,
     "added": "2026-09-29",
     "bestseller": false,
-    "description": "Two years in a cabin by a pond, and a lasting argument for simple living and paying attention."
+    "description": "Two years in a cabin by a pond, and a lasting argument for simple living and paying attention.",
+    "payLink": "https://www.paypal.com/ncp/payment/48D7GJLVPCVDG"
   }
 ]

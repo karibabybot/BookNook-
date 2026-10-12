@@ -72,6 +72,7 @@
   .d-desc { color:#4d4958; line-height:1.55; margin:10px 0 0; }
   .pp { margin-top:20px; min-height:60px; }
   .pp-err { color:#b3261e; font-size:.92rem; }
+  .soon { text-align:center; color:var(--muted); border:1.5px dashed var(--line); border-radius:999px; padding:15px; margin:0; }
   .buy { display:block; text-align:center; background:#111; color:#fff; text-decoration:none; font-weight:600; padding:16px; border-radius:999px; }
   .buy:hover { background:#000; }
   .fine { color:var(--muted); font-size:.85rem; margin:14px 0 0; text-align:center; }
@@ -209,8 +210,11 @@
       box.innerHTML = `<a class="buy" href="${esc(book.payLink)}" target="_blank" rel="noopener">Buy now with PayPal</a>`;
       return;
     }
+    // No shared fallback: a book without its own PayPal link or button ID can't be bought,
+    // so a customer never sees the wrong title at PayPal checkout.
+    const id = book.paypalId;
+    if (!id) { box.innerHTML = '<p class="soon">Coming soon</p>'; return; }
     if (typeof paypal === "undefined" || !paypal.HostedButtons) return fail();
-    const id = book.paypalId || PAYPAL_BUTTON_ID;
     const holder = document.createElement("div");
     holder.id = "paypal-container-" + id;
     box.appendChild(holder);
