@@ -53,8 +53,8 @@
     <textarea id="description"></textarea>
     <label for="cover">Cover image file name (optional)</label>
     <input type="text" id="cover" placeholder="covers/moby-dick.jpg">
-    <label for="pp">PayPal button code for this book</label>
-    <textarea id="pp" style="min-height:70px" placeholder="Paste the whole code PayPal gave you for this book's button. Leave empty to use your shared e-book button."></textarea>
+    <label for="pp">PayPal link or button code for this book</label>
+    <textarea id="pp" style="min-height:70px" placeholder="Paste the PayPal payment link (paypal.com/ncp/payment/...) or the button code PayPal gave you. Leave empty to use your shared e-book button."></textarea>
     <label class="check"><input type="checkbox" id="best"> Show in Best Sellers</label>
     <div class="btns"><button id="add">Add to list</button></div>
     <div class="msg" id="msg"></div>
@@ -99,11 +99,14 @@
     const cover = $("cover").value.trim();
     if (cover) b.cover = cover;
     const raw = $("pp").value.trim();
-    if (raw) {
+    const link = raw.match(/https:\/\/(?:www\.)?paypal\.com\/ncp\/payment\/[A-Za-z0-9]+/);
+    if (link) {
+      b.payLink = link[0];
+    } else if (raw) {
       const m = raw.match(/hostedButtonId\s*:\s*["']([A-Za-z0-9]+)["']/) ||
                 raw.match(/paypal-container-([A-Za-z0-9]+)/) ||
                 raw.match(/^([A-Z0-9]{10,16})$/);
-      if (!m) return say("Could not find a PayPal button ID in what you pasted. Paste the full code PayPal gave you, or clear the box.", true);
+      if (!m) return say("Could not find a PayPal link or button ID in what you pasted. Paste the full link or code from PayPal, or clear the box.", true);
       b.paypalId = m[1];
     }
     books.unshift(b);

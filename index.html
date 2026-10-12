@@ -72,6 +72,8 @@
   .d-desc { color:#4d4958; line-height:1.55; margin:10px 0 0; }
   .pp { margin-top:20px; min-height:60px; }
   .pp-err { color:#b3261e; font-size:.92rem; }
+  .buy { display:block; text-align:center; background:#111; color:#fff; text-decoration:none; font-weight:600; padding:16px; border-radius:999px; }
+  .buy:hover { background:#000; }
   .fine { color:var(--muted); font-size:.85rem; margin:14px 0 0; text-align:center; }
 
   footer { background:#fff; border-top:1px solid var(--line); padding:26px 0 40px; color:var(--muted); font-size:.88rem; text-align:center; }
@@ -203,6 +205,10 @@
     const box = $("pp");
     box.innerHTML = "";
     const fail = () => { box.innerHTML = '<p class="pp-err">Checkout could not load. Please refresh the page and try again.</p>'; };
+    if (book.payLink && /^https:\/\/(www\.)?paypal\.com\//.test(book.payLink)) {
+      box.innerHTML = `<a class="buy" href="${esc(book.payLink)}" target="_blank" rel="noopener">Buy now with PayPal</a>`;
+      return;
+    }
     if (typeof paypal === "undefined" || !paypal.HostedButtons) return fail();
     const id = book.paypalId || PAYPAL_BUTTON_ID;
     const holder = document.createElement("div");
