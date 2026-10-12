@@ -23,10 +23,8 @@
   .card h2 { font-size:1.15rem; margin:0; }
   .author { color:var(--muted); font-size:.95rem; margin:2px 0 10px; }
   .desc { font-size:.95rem; flex:1; margin:0 0 14px; }
-  .row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
-  .price { font-weight:bold; font-size:1.1rem; }
-  .buy { background:var(--accent); color:#fff; text-decoration:none; padding:10px 18px; border-radius:8px; font-family:system-ui,sans-serif; font-size:.95rem; }
-  .buy:hover { opacity:.9; }
+  .price { font-weight:bold; font-size:1.1rem; display:block; margin-bottom:10px; }
+  .soon { display:block; text-align:center; border:1px dashed var(--line); color:var(--muted); padding:10px 18px; border-radius:8px; font-family:system-ui,sans-serif; font-size:.95rem; }
   .about { border-top:1px solid var(--line); padding:32px 0; color:var(--muted); font-size:.95rem; }
   .about h3 { color:var(--ink); margin-top:0; }
   footer { padding:24px 0 48px; text-align:center; color:var(--muted); font-size:.85rem; font-family:system-ui,sans-serif; }
@@ -44,8 +42,8 @@
 
     <section class="about">
       <h3>About BookNook</h3>
-      <p>BookNook offers timeless public domain classics, carefully formatted so they read well on any device. Every purchase includes EPUB and PDF files that work with most e-readers and reading apps. After checkout you get an instant download link by email.</p>
-      <p>Questions? Reach out through the contact link on your receipt.</p>
+      <p>BookNook offers timeless public domain classics, carefully formatted so they read well on any device. Every purchase includes EPUB and PDF files that work with most e-readers and reading apps.</p>
+      <p>After you pay, your book is sent to the email address on your PayPal account.</p>
     </section>
   </main>
 
@@ -54,15 +52,18 @@
   </footer>
 </div>
 
+<script src="https://www.paypal.com/sdk/js?client-id=BAAOsjUgOYue9_FKHtLLSoda9tAhGz4shZmyUO4q7qoaFz1U_vUFZ8PyGyyssPrpW9MS40XAUzD4M-fr1k&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
+
 <script>
-  // TO EDIT: change titles/prices, and replace each buyUrl with your Gumroad or Payhip product link.
+  // TO EDIT: change titles/prices. For each book, paste its PayPal hostedButtonId into paypalId.
+  // Books with an empty paypalId show "Coming soon" instead of a buy button.
   const books = [
     {
       title: "Frankenstein",
       author: "Mary Shelley",
       description: "The 1818 gothic classic of ambition and its consequences, with a linked table of contents.",
       price: "$2.99",
-      buyUrl: "PASTE-YOUR-GUMROAD-OR-PAYHIP-LINK-HERE",
+      paypalId: "",
       cover: ""
     },
     {
@@ -70,7 +71,7 @@
       author: "Bram Stoker",
       description: "The original vampire novel from 1897, cleanly formatted for easy reading on any screen.",
       price: "$2.99",
-      buyUrl: "PASTE-YOUR-GUMROAD-OR-PAYHIP-LINK-HERE",
+      paypalId: "",
       cover: ""
     },
     {
@@ -78,7 +79,7 @@
       author: "Jane Austen",
       description: "Austen's beloved 1813 romance of manners, with clear chapter navigation.",
       price: "$2.99",
-      buyUrl: "PASTE-YOUR-GUMROAD-OR-PAYHIP-LINK-HERE",
+      paypalId: "",
       cover: ""
     }
   ];
@@ -91,15 +92,24 @@
       <h2>${esc(b.title)}</h2>
       <div class="author">${esc(b.author)}</div>
       <p class="desc">${esc(b.description)}</p>
-      <div class="row">
-        <span class="price">${esc(b.price)}</span>
-        <a class="buy" href="${esc(b.buyUrl)}" target="_blank" rel="noopener">Buy now</a>
-      </div>
+      <span class="price">${esc(b.price)}</span>
+      ${b.paypalId
+        ? `<div id="paypal-container-${esc(b.paypalId)}"></div>`
+        : `<span class="soon">Coming soon</span>`}
     </article>
   `).join("");
+
+  books.forEach(b => {
+    if (!b.paypalId) return;
+    try {
+      paypal.HostedButtons({ hostedButtonId: b.paypalId })
+        .render("#paypal-container-" + b.paypalId);
+    } catch (e) {
+      console.error("PayPal button failed for " + b.title, e);
+    }
+  });
 
   document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
-
