@@ -24,7 +24,7 @@ The site updates in about a minute. Each book needs: `title`, `author`, `categor
 
 ## Payments
 
-Every book uses the same PayPal button (`PAYPAL_BUTTON_ID` near the top of the script in `index.html`). PayPal charges whatever price that button is set to ($5.00). The price shown on the page is only a label, so keep the two matching.
+Books use the shared PayPal button (`PAYPAL_BUTTON_ID` near the top of the script in `index.html`) unless a book has its own `paypalId` in `books.json`. The add-a-book form fills `paypalId` for you when you paste a PayPal button code. PayPal charges whatever price the button is set to, so keep the price shown on the page matching it.
 
 ## Before listing a book
 
