@@ -31,7 +31,7 @@
 <body>
 <div class="wrap">
   <h1>Add a Book</h1>
-  <p class="sub">Fill this in, then paste the result into your book list on GitHub. Nothing is saved from this page.</p>
+  <p class="sub">Fill this in and click <b>Add &amp; publish</b>. The book is saved to your site automatically.</p>
 
   <div class="card">
     <label for="title">Title</label>
@@ -54,14 +54,30 @@
     <label for="cover">Cover image file name (optional)</label>
     <input type="text" id="cover" placeholder="covers/moby-dick.jpg">
     <label for="pp">PayPal link or button code for this book</label>
-    <textarea id="pp" style="min-height:70px" placeholder="Paste the PayPal payment link (paypal.com/ncp/payment/...) or the button code PayPal gave you. If you leave it empty, the book shows "Coming soon" instead of a Buy button."></textarea>
+    <textarea id="pp" style="min-height:70px" placeholder="Paste the PayPal payment link (paypal.com/ncp/payment/...) or the button code PayPal gave you. If you leave it empty, the book shows &quot;Coming soon&quot; instead of a Buy button."></textarea>
     <label class="check"><input type="checkbox" id="best"> Show in Best Sellers</label>
-    <div class="btns"><button id="add">Add to list</button></div>
+    <div class="btns"><button id="addpub">Add &amp; publish</button><button id="add" class="alt">Add to list only</button></div>
     <div class="msg" id="msg"></div>
   </div>
 
   <div class="card">
-    <strong>Then update your site</strong>
+    <strong>One-time setup: GitHub token</strong>
+    <p class="sub" style="margin:6px 0 0">This lets the form save to your site. It is stored only in this browser, never on the site. Use your own phone or computer.</p>
+    <ol>
+      <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub's new token page</a>.</li>
+      <li>Name it "BookNook form" and pick an expiry date (90 days or longer).</li>
+      <li>Under <b>Repository access</b>, choose <b>Only select repositories</b> and pick <b>BookNook-</b>.</li>
+      <li>Under <b>Permissions &rarr; Repository permissions</b>, set <b>Contents</b> to <b>Read and write</b>.</li>
+      <li>Click <b>Generate token</b>, copy it, and paste it below.</li>
+    </ol>
+    <label for="token">GitHub token</label>
+    <input type="password" id="token" autocomplete="off" placeholder="github_pat_...">
+    <div class="btns"><button id="savetoken">Save token</button><button id="forget" class="alt">Forget token</button></div>
+    <div class="msg" id="tmsg"></div>
+  </div>
+
+  <div class="card">
+    <strong>Manual way (if you prefer)</strong>
     <ol>
       <li>Click <b>Copy list</b> below.</li>
       <li>Click <b>Open book list on GitHub</b>, select everything in the editor, and paste.</li>
@@ -79,6 +95,13 @@
 <script>
   const $ = id => document.getElementById(id);
   let books = [];
+  let pending = [];
+  const API = "https://api.github.com/repos/karibabybot/BookNook-/contents/books.json";
+  const getToken = () => { try { return localStorage.getItem("booknook_token") || ""; } catch (e) { return ""; } };
+  const setToken = t => { try { t ? localStorage.setItem("booknook_token", t) : localStorage.removeItem("booknook_token"); return true; } catch (e) { return false; } };
+  const tsay = (t, bad) => { $("tmsg").textContent = t; $("tmsg").className = "msg" + (bad ? " err" : ""); };
+  const refreshTokenUi = () => tsay(getToken() ? "Token saved in this browser." : "No token saved yet.", !getToken());
+  refreshTokenUi();
   const refresh = () => { $("out").value = JSON.stringify(books, null, 2) + "\n"; };
   const say = (t, bad) => { $("msg").textContent = t; $("msg").className = "msg" + (bad ? " err" : ""); };
 
@@ -87,9 +110,10 @@
     $("cats").innerHTML = [...new Set(d.map(b => b.category))].sort().map(c => `<option value="${c.replace(/"/g, "&quot;")}">`).join("");
   }).catch(() => say("Could not load the current book list. Reload this page.", true));
 
-  $("add").addEventListener("click", () => {
+  function addBook() {
     const title = $("title").value.trim(), author = $("author").value.trim(), category = $("category").value.trim();
-    if (!title || !author || !category) return say("Title, author and category are required.", true);
+    if (!title || !author || !category) { say("Title, author and category are required.", true); return false; }
+    if (books.some(x => x.title.toLowerCase() === title.toLowerCase())) { say(`"${title}" is already in the list.`, true); return false; }
     const b = { title, author, category };
     const year = parseInt($("year").value, 10);
     if (year) b.year = year;
@@ -106,15 +130,79 @@
       const m = raw.match(/hostedButtonId\s*:\s*["']([A-Za-z0-9]+)["']/) ||
                 raw.match(/paypal-container-([A-Za-z0-9]+)/) ||
                 raw.match(/^([A-Z0-9]{10,16})$/);
-      if (!m) return say("Could not find a PayPal link or button ID in what you pasted. Paste the full link or code from PayPal, or clear the box.", true);
+      if (!m) { say("Could not find a PayPal link or button ID in what you pasted. Paste the full link or code from PayPal, or clear the box.", true); return false; }
       b.paypalId = m[1];
     }
     books.unshift(b);
+    pending.unshift(b);
     refresh();
-    say(`Added "${title}". Add another, or copy the list below.`);
+    say(`Added "${title}".`);
     ["title","author","year","description","cover","pp"].forEach(id => $(id).value = "");
     $("best").checked = false;
+    return true;
+  }
+
+  const toBase64 = text => {
+    const bytes = new TextEncoder().encode(text);
+    let bin = "";
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return btoa(bin);
+  };
+  const fromBase64 = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g, "")), c => c.charCodeAt(0)));
+
+  async function publish() {
+    const token = getToken();
+    if (!token) return say("Save your GitHub token first (see One-time setup below).", true);
+    if (!pending.length) return say("Nothing new to publish. Add a book first.", true);
+    const headers = { Authorization: "Bearer " + token, Accept: "application/vnd.github+json" };
+    const btns = [$("addpub"), $("add"), $("copy")];
+    btns.forEach(x => x.disabled = true);
+    say("Publishing...");
+    try {
+      const r = await fetch(API + "?ref=main&t=" + Date.now(), { headers, cache: "no-store" });
+      if (r.status === 401) throw new Error("GitHub rejected the token. It may have expired. Make a new one and save it again.");
+      if (r.status === 403 || r.status === 404) throw new Error("The token can't access BookNook-. Check it has Contents: Read and write on that repository.");
+      if (!r.ok) throw new Error("Could not read the book list from GitHub (error " + r.status + ").");
+      const file = await r.json();
+      const remote = JSON.parse(fromBase64(file.content));
+      const have = new Set(remote.map(x => x.title.toLowerCase()));
+      const fresh = pending.filter(x => !have.has(x.title.toLowerCase()));
+      if (!fresh.length) { pending = []; books = remote; refresh(); return say("Those books are already on the site."); }
+      const next = [...fresh, ...remote];
+      const names = fresh.map(x => x.title).join(", ");
+      const put = await fetch(API, {
+        method: "PUT",
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "Add " + names + " (via add-book form)", content: toBase64(JSON.stringify(next, null, 2) + "\n"), sha: file.sha, branch: "main" })
+      });
+      if (put.status === 409 || put.status === 422) throw new Error("The list changed while saving. Click Publish again.");
+      if (!put.ok) throw new Error("Could not save to GitHub (error " + put.status + ").");
+      pending = [];
+      books = next;
+      refresh();
+      say(`Published "${names}". Your site updates in about a minute.`);
+    } catch (e) {
+      say(e.message || "Could not publish. Check your connection and try again.", true);
+    } finally {
+      btns.forEach(x => x.disabled = false);
+    }
+  }
+
+  $("add").addEventListener("click", addBook);
+  $("addpub").addEventListener("click", () => {
+    if (!getToken()) return say("Save your GitHub token first (see One-time setup below).", true);
+    if (pending.length && !$("title").value.trim() && !$("author").value.trim()) return publish();
+    if (addBook()) publish();
   });
+
+  $("savetoken").addEventListener("click", () => {
+    const t = $("token").value.trim();
+    if (!t) return tsay("Paste your token first.", true);
+    if (!setToken(t)) return tsay("This browser would not save the token. Try a normal (not private) window.", true);
+    $("token").value = "";
+    tsay("Token saved in this browser.");
+  });
+  $("forget").addEventListener("click", () => { setToken(""); refreshTokenUi(); });
 
   $("copy").addEventListener("click", async () => {
     $("out").select();
