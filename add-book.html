@@ -180,6 +180,7 @@
         body: JSON.stringify({ message: "Add " + names + " (via add-book form)", content: toBase64(JSON.stringify(next, null, 2) + "\n"), sha: file.sha, branch: "main" })
       });
       if (put.status === 409 || put.status === 422) throw new Error("The list changed while saving. Click Publish again.");
+      if (put.status === 401 || put.status === 403 || put.status === 404) throw new Error("GitHub would not let this token save changes (error " + put.status + "). Edit the token on GitHub: set Repository access to BookNook- only, and Contents to Read and write. Then save it here again.");
       if (!put.ok) throw new Error("Could not save to GitHub (error " + put.status + ").");
       pending = [];
       books = next;
