@@ -4,112 +4,252 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BookNook</title>
-<meta name="description" content="Classic books, cleanly formatted for your e-reader.">
+<meta name="description" content="Classic public domain books, cleanly formatted for your e-reader. $5 each.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#faf7f2; --ink:#2a2420; --muted:#6b625a; --accent:#8b3a2f; --card:#fff; --line:#e6dfd4; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#1b1815; --ink:#f0e9df; --muted:#a99f94; --accent:#d9826f; --card:#25211d; --line:#3a342e; }
-  }
+  :root { --purple:#7468ff; --pink:#ee5fa7; --ink:#17141f; --muted:#7d788a; --line:#ece9f4; --soft:#f5f3fb; }
   * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink); font-family:Georgia,serif; line-height:1.6; }
-  .wrap { max-width:960px; margin:0 auto; padding:0 16px; }
-  header { padding:48px 0 16px; text-align:center; }
-  header h1 { font-size:2.4rem; margin:0 0 8px; }
-  header p { color:var(--muted); margin:0; font-size:1.1rem; }
-  .grid { display:grid; gap:20px; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); padding:24px 0 40px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; display:flex; flex-direction:column; }
-  .cover { aspect-ratio:2/3; border-radius:6px; margin-bottom:14px; background:linear-gradient(135deg,var(--accent),#3b2a26); color:#fff; display:flex; align-items:center; justify-content:center; text-align:center; padding:16px; font-size:1.3rem; overflow:hidden; }
-  .cover img { width:100%; height:100%; object-fit:cover; }
-  .card h2 { font-size:1.15rem; margin:0; }
-  .author { color:var(--muted); font-size:.95rem; margin:2px 0 10px; }
-  .desc { font-size:.95rem; flex:1; margin:0 0 14px; }
-  .price { font-weight:bold; font-size:1.1rem; display:block; margin-bottom:10px; }
-  .soon { display:block; text-align:center; border:1px dashed var(--line); color:var(--muted); padding:10px 18px; border-radius:8px; font-family:system-ui,sans-serif; font-size:.95rem; }
-  .about { border-top:1px solid var(--line); padding:32px 0; color:var(--muted); font-size:.95rem; }
-  .about h3 { color:var(--ink); margin-top:0; }
-  footer { padding:24px 0 48px; text-align:center; color:var(--muted); font-size:.85rem; font-family:system-ui,sans-serif; }
+  [hidden] { display:none !important; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; font-family:Outfit,system-ui,-apple-system,sans-serif; color:var(--ink); background:#fff; -webkit-font-smoothing:antialiased; }
+  button { font:inherit; color:inherit; }
+  .wrap { max-width:1100px; margin:0 auto; padding:0 20px; }
+
+  /* Hero */
+  .hero { background:var(--purple); color:#fff; padding:20px 0 70px; }
+  .brand { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:1.05rem; background:rgba(255,255,255,.18); padding:10px 18px; border-radius:999px; }
+  .brand svg { width:20px; height:20px; }
+  .hero h1 { font-size:clamp(2.2rem,6vw,3.6rem); line-height:1.05; margin:34px 0 10px; font-weight:600; max-width:13ch; }
+  .hero p { margin:0; color:rgba(255,255,255,.82); font-size:1.05rem; }
+  .search { display:flex; align-items:center; gap:12px; border-bottom:1.5px solid rgba(255,255,255,.55); padding:12px 0; margin-top:28px; max-width:560px; }
+  .search svg { width:22px; height:22px; flex:none; }
+  .search input { flex:1; min-width:0; background:none; border:0; color:#fff; font:inherit; font-size:1rem; outline:none; }
+  .search input::placeholder { color:rgba(255,255,255,.72); }
+  .tabs { display:flex; gap:26px; overflow-x:auto; margin-top:26px; padding:6px 0; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab { background:none; border:0; color:rgba(255,255,255,.72); font-size:1.02rem; cursor:pointer; padding:4px 0; position:relative; white-space:nowrap; }
+  .tab sup { font-size:.62em; margin-left:3px; opacity:.85; }
+  .tab.on { color:#fff; font-weight:600; }
+  .tab.on::after { content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:#fff; border-radius:2px; }
+
+  /* Sheet */
+  .sheet { background:#fff; border-radius:34px 34px 0 0; margin-top:-34px; padding:14px 0 60px; min-height:60vh; position:relative; }
+  .sec-h { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:28px 0 14px; }
+  .sec-h h2 { font-size:1.55rem; margin:0; font-weight:600; }
+  .sec-h h2 em { font-style:normal; color:var(--pink); }
+  .see { background:none; border:0; color:var(--purple); font-weight:500; cursor:pointer; padding:4px 0; }
+  .rail { display:flex; gap:18px; overflow-x:auto; padding:4px 20px 16px; margin:0 -20px; scroll-snap-type:x proximity; scroll-padding-inline:20px; scrollbar-width:none; }
+  .rail::-webkit-scrollbar { display:none; }
+  .rail .book { flex:0 0 150px; scroll-snap-align:start; }
+  .grid { display:grid; gap:24px 18px; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); padding-top:4px; }
+
+  .book { background:none; border:0; padding:0; text-align:left; cursor:pointer; display:flex; flex-direction:column; justify-content:flex-start; align-self:flex-start; width:100%; }
+  .cover { aspect-ratio:2/3; border-radius:10px; background:linear-gradient(150deg,var(--c1),var(--c2)); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:14px; text-align:center; box-shadow:0 12px 24px -12px rgba(40,30,90,.5); overflow:hidden; transition:transform .2s; }
+  .book:hover .cover, .book:focus-visible .cover { transform:translateY(-4px); }
+  .book:focus-visible { outline:2px solid var(--purple); outline-offset:4px; border-radius:10px; }
+  .cover img { width:100%; height:100%; object-fit:cover; margin:-14px; }
+  .c-title { font-family:Georgia,serif; font-size:1.05rem; line-height:1.2; letter-spacing:.02em; }
+  .c-rule { width:34px; height:2px; background:rgba(255,255,255,.7); }
+  .c-author { font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; opacity:.9; }
+  .b-title { font-weight:600; margin-top:10px; line-height:1.25; }
+  .b-author { color:var(--muted); font-size:.88rem; }
+  .b-price { color:var(--pink); font-weight:600; margin-top:2px; }
+  .empty { text-align:center; color:var(--muted); padding:60px 0; }
+
+  /* Detail sheet */
+  dialog { border:0; padding:0; border-radius:28px; width:min(520px,calc(100% - 24px)); max-height:92vh; overflow:auto; background:#fff; color:var(--ink); }
+  dialog::backdrop { background:rgba(23,20,31,.55); }
+  .d-top { background:linear-gradient(#ebe8ff,#f7f5ff); padding:36px 20px 28px; display:flex; justify-content:center; position:relative; }
+  .d-top .cover { width:170px; }
+  .x { position:absolute; top:14px; right:14px; width:40px; height:40px; border-radius:50%; border:0; background:#fff; cursor:pointer; font-size:1.3rem; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,.12); }
+  .d-body { padding:22px 24px 26px; }
+  .d-meta { color:var(--muted); font-size:.9rem; }
+  .d-body h3 { font-size:1.8rem; line-height:1.15; margin:4px 0 2px; font-weight:600; }
+  .d-by { color:var(--muted); margin-bottom:6px; }
+  .d-price { color:var(--pink); font-size:1.9rem; font-weight:600; }
+  .d-desc { color:#4d4958; line-height:1.55; margin:10px 0 0; }
+  .pp { margin-top:20px; min-height:60px; }
+  .pp-err { color:#b3261e; font-size:.92rem; }
+  .fine { color:var(--muted); font-size:.85rem; margin:14px 0 0; text-align:center; }
+
+  footer { background:#fff; border-top:1px solid var(--line); padding:26px 0 40px; color:var(--muted); font-size:.88rem; text-align:center; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>BookNook</h1>
-    <p>Classic books, cleanly formatted for your e-reader.</p>
-  </header>
 
-  <main>
-    <div class="grid" id="books"></div>
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>
+      BookNook
+    </div>
+    <h1>Timeless books, ready to read</h1>
+    <p>Public domain classics formatted for your e-reader. $5 each.</p>
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search any book or author..." aria-label="Search books" autocomplete="off">
+    </label>
+    <nav class="tabs" id="tabs" aria-label="Categories"></nav>
+  </div>
+</header>
 
-    <section class="about">
-      <h3>About BookNook</h3>
-      <p>BookNook offers timeless public domain classics, carefully formatted so they read well on any device. Every purchase includes EPUB and PDF files that work with most e-readers and reading apps.</p>
-      <p>After you pay, your book is sent to the email address on your PayPal account.</p>
-    </section>
-  </main>
+<main class="sheet">
+  <div class="wrap">
+    <div id="home" hidden></div>
+    <div id="results" hidden></div>
+    <p class="empty" id="status">Loading books…</p>
+  </div>
+</main>
 
-  <footer>
-    &copy; <span id="year"></span> BookNook. The original texts are in the public domain.
-  </footer>
-</div>
+<footer>
+  <div class="wrap">&copy; <span id="year"></span> BookNook. The original texts are in the public domain.</div>
+</footer>
+
+<dialog id="dlg" aria-label="Book details">
+  <div class="d-top">
+    <button class="x" id="close" aria-label="Close">&times;</button>
+    <div id="d-cover"></div>
+  </div>
+  <div class="d-body">
+    <div class="d-meta" id="d-meta"></div>
+    <h3 id="d-title"></h3>
+    <div class="d-by" id="d-by"></div>
+    <div class="d-price" id="d-price"></div>
+    <p class="d-desc" id="d-desc"></p>
+    <div class="pp" id="pp"></div>
+    <p class="fine">Secure checkout with PayPal. Your download link is emailed to the address on your payment.</p>
+  </div>
+</dialog>
 
 <script src="https://www.paypal.com/sdk/js?client-id=BAAOsjUgOYue9_FKHtLLSoda9tAhGz4shZmyUO4q7qoaFz1U_vUFZ8PyGyyssPrpW9MS40XAUzD4M-fr1k&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
 
 <script>
-  // TO EDIT: change titles/prices. For each book, paste its PayPal hostedButtonId into paypalId.
-  // Books with an empty paypalId show "Coming soon" instead of a buy button.
-  const books = [
-    {
-      title: "Frankenstein",
-      author: "Mary Shelley",
-      description: "The 1818 gothic classic of ambition and its consequences, with a linked table of contents.",
-      price: "$5.00",
-      paypalId: "",
-      cover: ""
-    },
-    {
-      title: "Dracula",
-      author: "Bram Stoker",
-      description: "The original vampire novel from 1897, cleanly formatted for easy reading on any screen.",
-      price: "$5.00",
-      paypalId: "",
-      cover: ""
-    },
-    {
-      title: "Pride and Prejudice",
-      author: "Jane Austen",
-      description: "Austen's beloved 1813 romance of manners, with clear chapter navigation.",
-      price: "$5.00",
-      paypalId: "",
-      cover: ""
+  // ---- Settings you may want to change ----
+  const PAYPAL_BUTTON_ID = "73EUP9Y88Z4EY"; // your "e-book" $5 PayPal button
+  const DEFAULT_PRICE = "$5.00";            // shown on the page; PayPal charges what the button is set to
+  // -----------------------------------------
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const PALETTES = [["#7468ff","#3b2fb8"],["#ee5fa7","#9c2a66"],["#2fb5a0","#126456"],["#f2a65a","#b4631a"],["#4a90e2","#1d4f91"],["#8e6bbf","#4b2a7a"],["#e8645a","#8f2a22"]];
+  const hash = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+
+  let books = [], activeCat = "All", query = "";
+
+  function coverHTML(b) {
+    if (b.cover) return `<div class="cover"><img src="${esc(b.cover)}" alt="Cover of ${esc(b.title)}"></div>`;
+    const p = PALETTES[hash(b.title) % PALETTES.length];
+    return `<div class="cover" style="--c1:${p[0]};--c2:${p[1]}"><span class="c-title">${esc(b.title)}</span><span class="c-rule"></span><span class="c-author">${esc(b.author)}</span></div>`;
+  }
+
+  function cardHTML(b) {
+    return `<button class="book" data-i="${books.indexOf(b)}" aria-label="${esc(b.title)} by ${esc(b.author)}">
+      ${coverHTML(b)}
+      <div class="b-title">${esc(b.title)}</div>
+      <div class="b-author">${esc(b.author)}</div>
+      <div class="b-price">${esc(b.price || DEFAULT_PRICE)}</div>
+    </button>`;
+  }
+
+  const categories = () => [...new Set(books.map(b => b.category).filter(Boolean))].sort();
+  const matches = b => {
+    const q = query.trim().toLowerCase();
+    return !q || [b.title, b.author, b.category, b.description].some(v => String(v || "").toLowerCase().includes(q));
+  };
+
+  function renderTabs() {
+    const cats = ["All", ...categories()];
+    $("tabs").innerHTML = cats.map(c => {
+      const n = c === "All" ? books.length : books.filter(b => b.category === c).length;
+      return `<button class="tab${c === activeCat ? " on" : ""}" data-cat="${esc(c)}">${esc(c)}<sup>${n}</sup></button>`;
+    }).join("");
+  }
+
+  function rail(title, list, cat) {
+    if (!list.length) return "";
+    const more = cat ? `<button class="see" data-cat="${esc(cat)}">See all</button>` : "";
+    return `<section><div class="sec-h"><h2>${title}</h2>${more}</div><div class="rail">${list.map(cardHTML).join("")}</div></section>`;
+  }
+
+  function render() {
+    renderTabs();
+    const searching = query.trim() !== "";
+    const home = $("home"), res = $("results");
+    $("status").hidden = true;
+
+    if (activeCat === "All" && !searching) {
+      const recent = [...books].sort((a, b) => String(b.added).localeCompare(String(a.added))).slice(0, 10);
+      const best = books.filter(b => b.bestseller);
+      home.innerHTML =
+        rail("Recently <em>Added</em>", recent) +
+        rail("Best <em>Sellers</em>", best) +
+        categories().map(c => rail(esc(c), books.filter(b => b.category === c), c)).join("");
+      home.hidden = false; res.hidden = true;
+    } else {
+      const list = books.filter(b => (activeCat === "All" || b.category === activeCat) && matches(b));
+      const heading = searching ? `Results for “${esc(query.trim())}”` : esc(activeCat);
+      res.innerHTML = `<div class="sec-h"><h2>${heading}</h2></div>` +
+        (list.length ? `<div class="grid">${list.map(cardHTML).join("")}</div>` : `<p class="empty">No books found.</p>`);
+      home.hidden = true; res.hidden = false;
     }
-  ];
+  }
 
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  // ---- Detail sheet + PayPal ----
+  const dlg = $("dlg");
 
-  document.getElementById("books").innerHTML = books.map(b => `
-    <article class="card">
-      <div class="cover">${b.cover ? `<img src="${esc(b.cover)}" alt="Cover of ${esc(b.title)}">` : esc(b.title)}</div>
-      <h2>${esc(b.title)}</h2>
-      <div class="author">${esc(b.author)}</div>
-      <p class="desc">${esc(b.description)}</p>
-      <span class="price">${esc(b.price)}</span>
-      ${b.paypalId
-        ? `<div id="paypal-container-${esc(b.paypalId)}"></div>`
-        : `<span class="soon">Coming soon</span>`}
-    </article>
-  `).join("");
-
-  books.forEach(b => {
-    if (!b.paypalId) return;
+  function mountPayPal(book) {
+    const box = $("pp");
+    box.innerHTML = "";
+    const fail = () => { box.innerHTML = '<p class="pp-err">Checkout could not load. Please refresh the page and try again.</p>'; };
+    if (typeof paypal === "undefined" || !paypal.HostedButtons) return fail();
+    const id = book.paypalId || PAYPAL_BUTTON_ID;
+    const holder = document.createElement("div");
+    holder.id = "paypal-container-" + id;
+    box.appendChild(holder);
     try {
-      paypal.HostedButtons({ hostedButtonId: b.paypalId })
-        .render("#paypal-container-" + b.paypalId);
-    } catch (e) {
-      console.error("PayPal button failed for " + b.title, e);
+      Promise.resolve(paypal.HostedButtons({ hostedButtonId: id }).render("#" + holder.id)).catch(fail);
+    } catch (e) { fail(); }
+  }
+
+  function openBook(i) {
+    const b = books[i];
+    if (!b) return;
+    $("d-cover").innerHTML = coverHTML(b);
+    $("d-meta").textContent = [b.category, b.year].filter(Boolean).join(" · ");
+    $("d-title").textContent = b.title;
+    $("d-by").textContent = "by " + b.author;
+    $("d-price").textContent = b.price || DEFAULT_PRICE;
+    $("d-desc").textContent = b.description || "";
+    mountPayPal(b);
+    dlg.showModal();
+  }
+
+  $("close").addEventListener("click", () => dlg.close());
+  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener("close", () => { $("pp").innerHTML = ""; });
+
+  document.addEventListener("click", e => {
+    const card = e.target.closest(".book");
+    if (card) return openBook(+card.dataset.i);
+    const cat = e.target.closest("[data-cat]");
+    if (cat) {
+      activeCat = cat.dataset.cat;
+      $("q").value = ""; query = "";
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   });
+  $("q").addEventListener("input", e => { query = e.target.value; render(); });
 
-  document.getElementById("year").textContent = new Date().getFullYear();
+  // ---- Load the book list ----
+  fetch("books.json?v=" + Date.now())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(data => { books = data; render(); })
+    .catch(() => { $("status").textContent = "The book list could not be loaded. Please refresh the page."; });
+
+  $("year").textContent = new Date().getFullYear();
 </script>
 </body>
 </html>

@@ -1,0 +1,128 @@
+[
+  {
+    "title": "Frankenstein",
+    "author": "Mary Shelley",
+    "category": "Mystery & Horror",
+    "year": 1818,
+    "added": "2026-10-12",
+    "bestseller": true,
+    "description": "A young scientist brings a creature to life, then refuses to answer for what he has made. The original gothic novel about ambition and its consequences."
+  },
+  {
+    "title": "Dracula",
+    "author": "Bram Stoker",
+    "category": "Mystery & Horror",
+    "year": 1897,
+    "added": "2026-10-11",
+    "bestseller": true,
+    "description": "A solicitor travels to Transylvania and uncovers a nightmare that follows him home. Told through letters, diaries and newspaper clippings."
+  },
+  {
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "category": "Romance",
+    "year": 1813,
+    "added": "2026-10-10",
+    "bestseller": true,
+    "description": "Elizabeth Bennet and Mr. Darcy misjudge each other badly in this sharp, funny comedy of manners about love, money and first impressions."
+  },
+  {
+    "title": "The Adventures of Sherlock Holmes",
+    "author": "Arthur Conan Doyle",
+    "category": "Mystery & Horror",
+    "year": 1892,
+    "added": "2026-10-09",
+    "bestseller": true,
+    "description": "Twelve short cases from the world's most famous consulting detective, narrated by his friend Dr. Watson."
+  },
+  {
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "category": "Children's",
+    "year": 1865,
+    "added": "2026-10-08",
+    "bestseller": true,
+    "description": "Alice follows a white rabbit down a hole and lands in a world where logic has gone delightfully wrong."
+  },
+  {
+    "title": "Jane Eyre",
+    "author": "Charlotte Brontë",
+    "category": "Romance",
+    "year": 1847,
+    "added": "2026-10-07",
+    "bestseller": false,
+    "description": "An orphan becomes a governess at Thornfield Hall and finds a secret there. A story of independence, love and conscience."
+  },
+  {
+    "title": "Wuthering Heights",
+    "author": "Emily Brontë",
+    "category": "Romance",
+    "year": 1847,
+    "added": "2026-10-06",
+    "bestseller": false,
+    "description": "A foundling, a wild house on the Yorkshire moors, and a love that turns into revenge across two generations."
+  },
+  {
+    "title": "Moby-Dick",
+    "author": "Herman Melville",
+    "category": "Adventure",
+    "year": 1851,
+    "added": "2026-10-05",
+    "bestseller": false,
+    "description": "Captain Ahab's obsessive hunt for the white whale, narrated by the sailor Ishmael. An epic of the sea and of obsession."
+  },
+  {
+    "title": "Treasure Island",
+    "author": "Robert Louis Stevenson",
+    "category": "Adventure",
+    "year": 1883,
+    "added": "2026-10-04",
+    "bestseller": false,
+    "description": "Young Jim Hawkins finds a pirate's map and sails in search of buried treasure, with Long John Silver aboard."
+  },
+  {
+    "title": "The Wonderful Wizard of Oz",
+    "author": "L. Frank Baum",
+    "category": "Children's",
+    "year": 1900,
+    "added": "2026-10-03",
+    "bestseller": false,
+    "description": "A Kansas farm girl is swept away to a magical land and sets off along the yellow brick road to find the Wizard."
+  },
+  {
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "category": "Classics",
+    "year": 1925,
+    "added": "2026-10-02",
+    "bestseller": false,
+    "description": "Nick Carraway watches his mysterious neighbor chase an old love through the glittering excess of the Jazz Age."
+  },
+  {
+    "title": "The Picture of Dorian Gray",
+    "author": "Oscar Wilde",
+    "category": "Classics",
+    "year": 1890,
+    "added": "2026-10-01",
+    "bestseller": false,
+    "description": "A beautiful young man stays unchanged while his portrait takes on the marks of his choices."
+  },
+  {
+    "title": "Leaves of Grass",
+    "author": "Walt Whitman",
+    "category": "Poetry",
+    "year": 1855,
+    "added": "2026-09-30",
+    "bestseller": false,
+    "description": "Whitman's sprawling, joyful celebration of the self, the body, nature and democracy in free verse."
+  },
+  {
+    "title": "Walden",
+    "author": "Henry David Thoreau",
+    "category": "Nonfiction",
+    "year": 1854,
+    "added": "2026-09-29",
+    "bestseller": false,
+    "description": "Two years in a cabin by a pond, and a lasting argument for simple living and paying attention."
+  }
+]
