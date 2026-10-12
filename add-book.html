@@ -51,6 +51,8 @@
     </div>
     <label for="description">Short description</label>
     <textarea id="description"></textarea>
+    <label for="price">Price shown on the page (optional)</label>
+    <input type="text" id="price" placeholder="$8.00 (leave empty for the usual $5.00)">
     <label for="cover">Cover image file name (optional)</label>
     <input type="text" id="cover" placeholder="covers/moby-dick.jpg">
     <label for="pp">PayPal link or button code for this book</label>
@@ -120,6 +122,8 @@
     b.added = new Date().toISOString().slice(0, 10);
     b.bestseller = $("best").checked;
     b.description = $("description").value.trim();
+    const price = $("price").value.trim();
+    if (price) b.price = /^\d+(\.\d+)?$/.test(price) ? "$" + Number(price).toFixed(2) : price;
     const cover = $("cover").value.trim();
     if (cover) b.cover = cover;
     const raw = $("pp").value.trim();
@@ -137,7 +141,7 @@
     pending.unshift(b);
     refresh();
     say(`Added "${title}".`);
-    ["title","author","year","description","cover","pp"].forEach(id => $(id).value = "");
+    ["title","author","year","description","price","cover","pp"].forEach(id => $(id).value = "");
     $("best").checked = false;
     return true;
   }
