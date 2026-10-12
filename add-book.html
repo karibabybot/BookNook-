@@ -105,7 +105,7 @@
   const refreshTokenUi = () => tsay(getToken() ? "Token saved in this browser." : "No token saved yet.", !getToken());
   refreshTokenUi();
   const refresh = () => { $("out").value = JSON.stringify(books, null, 2) + "\n"; };
-  const say = (t, bad) => { $("msg").textContent = t; $("msg").className = "msg" + (bad ? " err" : ""); };
+  const say = (t, bad) => { $("msg").textContent = t; $("msg").className = "msg" + (bad ? " err" : ""); try { $("msg").scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e) {} };
 
   fetch("books.json?v=" + Date.now()).then(r => r.json()).then(d => {
     books = d; refresh();
@@ -194,7 +194,15 @@
 
   $("add").addEventListener("click", addBook);
   $("addpub").addEventListener("click", () => {
-    if (!getToken()) return say("Save your GitHub token first (see One-time setup below).", true);
+    const pasted = $("token").value.trim();
+    if (pasted) {
+      if (!setToken(pasted)) return say("This browser would not save the token. Try a normal (not private) window.", true);
+      $("token").value = "";
+      tsay("Token saved in this browser.");
+    }
+    if (!getToken()) { window.scrollTo({ top: 0, behavior: "smooth" }); return say("No GitHub token saved yet. Paste it in the One-time setup box below, then tap Add & publish again.", true); }
+    const t = $("title").value.trim().toLowerCase();
+    if (t && pending.some(x => x.title.toLowerCase() === t)) { ["title","author","year","description","price","cover","pp"].forEach(id => $(id).value = ""); return publish(); }
     if (pending.length && !$("title").value.trim() && !$("author").value.trim()) return publish();
     if (addBook()) publish();
   });
