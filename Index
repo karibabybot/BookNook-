@@ -1,5 +1,105 @@
-Your Bookshop Name
-Carefully formatted classics for your e-reader.
-What you get
-Each edition is based on a public domain text, proofread and formatted for Kindle, Apple Books, and other e-readers. Files come as EPUB and PDF. Edit this section to describe what makes your editions worth buying: an introduction, illustrations, notes, or bundled works.
-© Your Bookshop Name · Texts are in the public domain. Introductions and formatting © Your Name.
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BookNook</title>
+<meta name="description" content="Classic books, cleanly formatted for your e-reader.">
+<style>
+  :root { --bg:#faf7f2; --ink:#2a2420; --muted:#6b625a; --accent:#8b3a2f; --card:#fff; --line:#e6dfd4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1b1815; --ink:#f0e9df; --muted:#a99f94; --accent:#d9826f; --card:#25211d; --line:#3a342e; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:Georgia,serif; line-height:1.6; }
+  .wrap { max-width:960px; margin:0 auto; padding:0 16px; }
+  header { padding:48px 0 16px; text-align:center; }
+  header h1 { font-size:2.4rem; margin:0 0 8px; }
+  header p { color:var(--muted); margin:0; font-size:1.1rem; }
+  .grid { display:grid; gap:20px; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); padding:24px 0 40px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; display:flex; flex-direction:column; }
+  .cover { aspect-ratio:2/3; border-radius:6px; margin-bottom:14px; background:linear-gradient(135deg,var(--accent),#3b2a26); color:#fff; display:flex; align-items:center; justify-content:center; text-align:center; padding:16px; font-size:1.3rem; overflow:hidden; }
+  .cover img { width:100%; height:100%; object-fit:cover; }
+  .card h2 { font-size:1.15rem; margin:0; }
+  .author { color:var(--muted); font-size:.95rem; margin:2px 0 10px; }
+  .desc { font-size:.95rem; flex:1; margin:0 0 14px; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .price { font-weight:bold; font-size:1.1rem; }
+  .buy { background:var(--accent); color:#fff; text-decoration:none; padding:10px 18px; border-radius:8px; font-family:system-ui,sans-serif; font-size:.95rem; }
+  .buy:hover { opacity:.9; }
+  .about { border-top:1px solid var(--line); padding:32px 0; color:var(--muted); font-size:.95rem; }
+  .about h3 { color:var(--ink); margin-top:0; }
+  footer { padding:24px 0 48px; text-align:center; color:var(--muted); font-size:.85rem; font-family:system-ui,sans-serif; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>BookNook</h1>
+    <p>Classic books, cleanly formatted for your e-reader.</p>
+  </header>
+
+  <main>
+    <div class="grid" id="books"></div>
+
+    <section class="about">
+      <h3>About BookNook</h3>
+      <p>BookNook offers timeless public domain classics, carefully formatted so they read well on any device. Every purchase includes EPUB and PDF files that work with most e-readers and reading apps. After checkout you get an instant download link by email.</p>
+      <p>Questions? Reach out through the contact link on your receipt.</p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> BookNook. The original texts are in the public domain.
+  </footer>
+</div>
+
+<script>
+  // TO EDIT: change titles/prices, and replace each buyUrl with your Gumroad or Payhip product link.
+  const books = [
+    {
+      title: "Frankenstein",
+      author: "Mary Shelley",
+      description: "The 1818 gothic classic of ambition and its consequences, with a linked table of contents.",
+      price: "$2.99",
+      buyUrl: "PASTE-YOUR-GUMROAD-OR-PAYHIP-LINK-HERE",
+      cover: ""
+    },
+    {
+      title: "Dracula",
+      author: "Bram Stoker",
+      description: "The original vampire novel from 1897, cleanly formatted for easy reading on any screen.",
+      price: "$2.99",
+      buyUrl: "PASTE-YOUR-GUMROAD-OR-PAYHIP-LINK-HERE",
+      cover: ""
+    },
+    {
+      title: "Pride and Prejudice",
+      author: "Jane Austen",
+      description: "Austen's beloved 1813 romance of manners, with clear chapter navigation.",
+      price: "$2.99",
+      buyUrl: "PASTE-YOUR-GUMROAD-OR-PAYHIP-LINK-HERE",
+      cover: ""
+    }
+  ];
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  document.getElementById("books").innerHTML = books.map(b => `
+    <article class="card">
+      <div class="cover">${b.cover ? `<img src="${esc(b.cover)}" alt="Cover of ${esc(b.title)}">` : esc(b.title)}</div>
+      <h2>${esc(b.title)}</h2>
+      <div class="author">${esc(b.author)}</div>
+      <p class="desc">${esc(b.description)}</p>
+      <div class="row">
+        <span class="price">${esc(b.price)}</span>
+        <a class="buy" href="${esc(b.buyUrl)}" target="_blank" rel="noopener">Buy now</a>
+      </div>
+    </article>
+  `).join("");
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
+
